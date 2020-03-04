@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart' show Cart;
 import 'package:shop_app/providers/orders.dart';
@@ -9,6 +10,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<Cart>(context);
+    print('[cartScreen] ${cart.totalAmount}');
 
     return Scaffold(
       appBar: AppBar(
@@ -29,11 +31,17 @@ class CartScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   Chip(
-                    label: Text(
-                      '\$${cart.totalAmount.toStringAsFixed(2)}',
-                      style: TextStyle(
-                          color:
-                              Theme.of(context).primaryTextTheme.title.color),
+                    label: Observer(
+                      builder: (_) {
+                        return Text(
+                          '\$${cart.totalAmount}',
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .primaryTextTheme
+                                  .title
+                                  .color),
+                        );
+                      },
                     ),
                     backgroundColor: Theme.of(context).primaryColor,
                   ),

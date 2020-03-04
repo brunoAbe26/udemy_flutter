@@ -1,8 +1,13 @@
-import 'package:flutter/widgets.dart';
 
 import './product.dart';
 
-class Products with ChangeNotifier {
+import 'package:mobx/mobx.dart';
+part 'products.g.dart';
+
+class Products = _ProductsBase with _$Products;
+
+abstract class _ProductsBase with Store {
+  @observable
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -38,36 +43,28 @@ class Products with ChangeNotifier {
     ),
   ];
 
-  var _showFavoritesOnly = false;
+  @observable
+  bool showFavoritesOnly = false;
 
-  List<Product> get items {
-    // if (_showFavoritesOnly) {
-    //   return _items.where((prodItem) => prodItem.isFavorite).toList();
-    // }
-    return [..._items];
-
+  @computed
+  List<Product> get favoriteItems =>
+      _items.where((prodItem) => prodItem.isFavorite).toList();
+    
+  @action
+  void setFavoritesOnly(bool b) {
+    showFavoritesOnly = b;
   }
 
-  List<Product> get favoriteItems {
-    return _items.where((prodItem) => prodItem.isFavorite).toList();
-  }
-
+  @action
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-  // void showFavoritesOnly() {
-  //   _showFavoritesOnly = true;
-  //   notifyListeners();
-  // }
-
-  // void showAll() {
-  //   _showFavoritesOnly = false;
-  //   notifyListeners();
-  // }
-
+  @action
   void addProduct() {
     // _items.add(value);
-    notifyListeners();
   }
+
+  @computed List<Product> get items => showFavoritesOnly ? favoriteItems : _items;
+
 }

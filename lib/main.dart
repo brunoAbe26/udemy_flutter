@@ -17,14 +17,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          builder: (ctx) => Products(),
+        // ChangeNotifierProvider(
+        //   builder: (ctx) => Products(),
+        // ),
+        Provider<Products>(
+          create: (_) => Products(),
+        ),
+        Provider<Cart>(
+          create: (_) => Cart(),
         ),
         ChangeNotifierProvider(
-          builder: (ctx) => Cart(),
-        ),
-        ChangeNotifierProvider(
-          builder: (ctx) => Orders(),
+          create: (ctx) => Orders(),
         ),
       ],
       child: MaterialApp(
@@ -38,7 +41,7 @@ class MyApp extends StatelessWidget {
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
           CartScreen.routeName: (ctx) => CartScreen(),
-          OrdersScreen.routeName: (ctx) =>  OrdersScreen(),
+          OrdersScreen.routeName: (ctx) => OrdersScreen(),
           UserProductsScreen.routeName: (ctx) => UserProductsScreen(),
           EditProductScreen.routeName: (ctx) => EditProductScreen(),
         },

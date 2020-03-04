@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart.dart';
 
@@ -13,6 +14,8 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Cart cart = Provider.of<Cart>(context);
+
     return Dismissible(
       key: ValueKey(id),
       background: Container(
@@ -40,7 +43,7 @@ class CartItem extends StatelessWidget {
               FlatButton(
                 child: Text('No'),
                 onPressed: () => Navigator.of(context).pop(false),
-              ),  
+              ),
               FlatButton(
                 child: Text('Yes'),
                 onPressed: () => Navigator.of(context).pop(true),
@@ -50,7 +53,7 @@ class CartItem extends StatelessWidget {
         );
       },
       onDismissed: (direction) {
-        Provider.of<Cart>(context, listen: false).removeItem(productId);
+        cart.removeItem(productId);
       },
       child: Card(
         margin: EdgeInsets.symmetric(
